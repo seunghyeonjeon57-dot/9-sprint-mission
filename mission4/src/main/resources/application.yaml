@@ -2,10 +2,14 @@ spring:
   application:
     name: discodeit
 
+server:
+  port: ${PORT:8080}
+
 discodeit:
   repository:
-    type: file   # jcf | file
+    type: file
     file-directory: .discodeit
+
 logging:
   level:
     org.springdoc: DEBUG
