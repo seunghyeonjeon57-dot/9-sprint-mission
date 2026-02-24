@@ -20,6 +20,7 @@ import java.util.UUID;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "User", description = "User API")
@@ -37,8 +38,8 @@ public interface UserApi {
       ),
   })
   public ResponseEntity<User> create(
-      @Parameter(description = "User 생성 정보", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)) UserCreateRequest userCreateRequest,
-      @Parameter(description = "User프로필 이미지", content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE)) MultipartFile profile);
+      @Parameter(description = "User 생성 정보", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)) @RequestPart UserCreateRequest userCreateRequest,
+      @Parameter(description = "User프로필 이미지", content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE)) @RequestPart MultipartFile profile);
 
   //  public ResponseEntity<UserDto> find(UUID userId);
   @Operation(summary = "전체 User 목록 조회")
@@ -62,8 +63,8 @@ public interface UserApi {
       )
   })
   public ResponseEntity<User> update(@Parameter(description = "수정할 User ID") UUID userId,
-      @Parameter(description = "수정할 User 정보") UserUpdateRequest userUpdateRequest,
-      @Parameter(description = "수정할 User 프로필 정보") MultipartFile profile);
+      @Parameter(description = "수정할 User 정보") @RequestPart UserUpdateRequest userUpdateRequest,
+      @Parameter(description = "수정할 User 프로필 정보") @RequestPart MultipartFile profile);
 
   @Operation(summary = "User 삭제")
   @ApiResponses(value = {
