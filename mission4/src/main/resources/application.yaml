@@ -7,11 +7,13 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
+
     show-sql: false
     defer-datasource-initialization: true
     properties:
       hibernate:
+        default_batch_fetch_size: 100
         format_sql: true
         highlight_sql: true
         use_sql_comments: true
@@ -21,3 +23,10 @@ logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.orm.jdbc.bind: trace
+
+
+discodeit:
+  storage:
+    type: local  # 이 부분이 없거나 틀리면 @ConditionalOnProperty가 이 빈을 죽입니다.
+    local:
+      root-path: ./storage # @Value 주입을 위해서도 필요함

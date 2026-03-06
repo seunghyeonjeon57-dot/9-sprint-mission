@@ -2,6 +2,7 @@ package com.sprint.mission.discodeit.controller;
 
 
 import com.sprint.mission.discodeit.controller.api.ReadStatusApi;
+import com.sprint.mission.discodeit.dto.data.ReadStatusDto;
 import com.sprint.mission.discodeit.dto.request.ReadStatusCreateRequest;
 import com.sprint.mission.discodeit.dto.request.ReadStatusUpdateRequest;
 import com.sprint.mission.discodeit.entity.ReadStatus;
@@ -24,28 +25,28 @@ public class ReadStatusController implements ReadStatusApi {
 
   @Override
   @PostMapping
-  public ResponseEntity<ReadStatus> create(
+  public ResponseEntity<ReadStatusDto> create(
       @RequestBody ReadStatusCreateRequest request
   ) {
-    ReadStatus readStatus = readStatusService.create(request);
+    ReadStatusDto readStatus = readStatusService.create(request);
     return ResponseEntity.status(HttpStatus.CREATED).body(readStatus);
   }
 
   @Override
-  @PutMapping("/{readStatusId}")
-  public ResponseEntity<ReadStatus> update(
+  @PatchMapping("/{readStatusId}")
+  public ResponseEntity<ReadStatusDto> update(
       @PathVariable UUID readStatusId,
       @RequestBody ReadStatusUpdateRequest request
   ) {
-    ReadStatus updateReadStatus = readStatusService.update(readStatusId, request);
+    ReadStatusDto updateReadStatus = readStatusService.update(readStatusId, request);
     return ResponseEntity.ok(updateReadStatus);
   }
 
   @GetMapping
-  public ResponseEntity<List<ReadStatus>> findByUserId(
+  public ResponseEntity<List<ReadStatusDto>> findByUserId(
       @RequestParam UUID userId
   ) {
-    List<ReadStatus> readStatusList = readStatusService.findAllByUserId(userId);
+    List<ReadStatusDto> readStatusList = readStatusService.findAllByUserId(userId);
     return ResponseEntity.ok(readStatusList);
   }
 

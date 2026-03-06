@@ -38,13 +38,13 @@ public class UserController implements UserApi {
   @PostMapping(
       consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
   )
-  public ResponseEntity<User> create(
+  public ResponseEntity<UserDto> create(
       @RequestPart("userCreateRequest") UserCreateRequest userCreateRequest,
       @RequestPart(value = "profile", required = false) MultipartFile profile
   ) {
     Optional<BinaryContentCreateRequest> profileRequest = Optional.ofNullable(profile)
         .flatMap(this::resolveProfileRequest);
-    User createdUser = userService.create(userCreateRequest, profileRequest);
+    UserDto createdUser = userService.create(userCreateRequest, profileRequest);
     return ResponseEntity
         .status(HttpStatus.CREATED)
         .body(createdUser);
@@ -73,7 +73,7 @@ public class UserController implements UserApi {
       consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
 
   )
-  public ResponseEntity<User> update(
+  public ResponseEntity<UserDto> update(
       @PathVariable UUID userId,
       @RequestPart("userUpdateRequest") UserUpdateRequest userUpdateRequest,
       @RequestPart(value = "profile", required = false) MultipartFile profile
@@ -81,7 +81,7 @@ public class UserController implements UserApi {
   ) {
     Optional<BinaryContentCreateRequest> profileRequest = Optional.ofNullable(profile)
         .flatMap(this::resolveProfileRequest);
-    User updateUser = userService.update(userId, userUpdateRequest, profileRequest);
+    UserDto updateUser = userService.update(userId, userUpdateRequest, profileRequest);
     return ResponseEntity.ok(updateUser);
 
 

@@ -1,5 +1,6 @@
 package com.sprint.mission.discodeit.controller.api;
 
+import com.sprint.mission.discodeit.dto.data.ReadStatusDto;
 import com.sprint.mission.discodeit.dto.request.ReadStatusCreateRequest;
 import com.sprint.mission.discodeit.dto.request.ReadStatusUpdateRequest;
 import com.sprint.mission.discodeit.entity.ReadStatus;
@@ -32,7 +33,7 @@ public interface ReadStatusApi {
       @ApiResponse(responseCode = "404", description = "Channel 또는 User를 찾을 수 없음",
           content = @Content(examples = @ExampleObject("Channel | User with id {channelId | userId} not found")))
   })
-  public ResponseEntity<ReadStatus> create(
+  public ResponseEntity<ReadStatusDto> create(
       @Parameter(description = "생성된 읽음 상태", required = true) @RequestBody ReadStatusCreateRequest request);
 
 
@@ -43,14 +44,14 @@ public interface ReadStatusApi {
       @ApiResponse(responseCode = "404", description = "Message 읽음 상태를 찾을 수 없음",
           content = @Content(examples = @ExampleObject("ReadStatus with id {readStatusId} not found")))
   })
-  public ResponseEntity<ReadStatus> update(
+  public ResponseEntity<ReadStatusDto> update(
       @Parameter(description = "수정할 읽음 상태 ID", required = true) @PathVariable UUID readStatusId,
       @Parameter(content = @Content(schema = @Schema(implementation = ReadStatusUpdateRequest.class))) @RequestBody ReadStatusUpdateRequest request);
 
   @Operation(summary = "User의 Message 읽음 상태 목록 조회", operationId = "findAllByUserId")
   @ApiResponse(responseCode = "200", description = "Message 읽음 상태 목록 조회 성공",
       content = @Content(array = @ArraySchema(schema = @Schema(implementation = ReadStatus.class))))
-  public ResponseEntity<List<ReadStatus>> findByUserId(
+  public ResponseEntity<List<ReadStatusDto>> findByUserId(
       @Parameter(description = "조회할 User ID", required = true) @RequestParam UUID userId);
 
 }

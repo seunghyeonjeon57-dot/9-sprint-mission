@@ -27,10 +27,10 @@ public class ChannelController implements ChannelApi {
   @PostMapping(
       path = "/public"
   )
-  public ResponseEntity<Channel> createPublic(
+  public ResponseEntity<ChannelDto> createPublic(
       @RequestBody PublicChannelCreateRequest publicChannelCreateRequest
   ) {
-    Channel publicChannel = channelService.create(publicChannelCreateRequest);
+    ChannelDto publicChannel = channelService.create(publicChannelCreateRequest);
     return ResponseEntity.status(HttpStatus.CREATED).body(publicChannel);
   }
 
@@ -38,10 +38,10 @@ public class ChannelController implements ChannelApi {
   @PostMapping(
       path = "/private"
   )
-  public ResponseEntity<Channel> createPrivate(
+  public ResponseEntity<ChannelDto> createPrivate(
       @RequestBody PrivateChannelCreateRequest privateChannelCreateRequest
   ) {
-    Channel privateChannel = channelService.create(privateChannelCreateRequest);
+    ChannelDto privateChannel = channelService.create(privateChannelCreateRequest);
     return ResponseEntity.status(HttpStatus.CREATED).body(privateChannel);
   }
 
@@ -56,7 +56,7 @@ public class ChannelController implements ChannelApi {
 //        return ResponseEntity.ok(findChannel);
 //    }
   @Override
-  @GetMapping()
+  @GetMapping
   public ResponseEntity<List<ChannelDto>> findAll(
       @RequestParam UUID userId
   ) {
@@ -66,12 +66,12 @@ public class ChannelController implements ChannelApi {
 
   @Override
   @PutMapping("/{channelId}")
-  public ResponseEntity<Channel> update(
+  public ResponseEntity<ChannelDto> update(
       @PathVariable UUID channelId,
       @RequestBody PublicChannelUpdateRequest request
 
   ) {
-    Channel updateChannel = channelService.update(channelId, request);
+    ChannelDto updateChannel = channelService.update(channelId, request);
     return ResponseEntity.ok(updateChannel);
   }
 

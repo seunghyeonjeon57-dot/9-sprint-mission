@@ -37,7 +37,7 @@ public interface UserApi {
           content = @Content(examples = @ExampleObject(value = "User with email {email} already exists"))
       ),
   })
-  public ResponseEntity<User> create(
+  public ResponseEntity<UserDto> create(
       @Parameter(description = "User 생성 정보", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)) @RequestPart UserCreateRequest userCreateRequest,
       @Parameter(description = "User프로필 이미지", content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE)) @RequestPart MultipartFile profile);
 
@@ -62,7 +62,7 @@ public interface UserApi {
           content = @Content(examples = @ExampleObject(value = "User with id {userId} not found"))
       )
   })
-  public ResponseEntity<User> update(@Parameter(description = "수정할 User ID") UUID userId,
+  public ResponseEntity<UserDto> update(@Parameter(description = "수정할 User ID") UUID userId,
       @Parameter(description = "수정할 User 정보") @RequestPart UserUpdateRequest userUpdateRequest,
       @Parameter(description = "수정할 User 프로필 정보") @RequestPart MultipartFile profile);
 
