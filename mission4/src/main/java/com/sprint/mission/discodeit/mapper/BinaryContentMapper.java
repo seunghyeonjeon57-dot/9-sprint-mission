@@ -3,23 +3,14 @@ package com.sprint.mission.discodeit.mapper;
 import com.sprint.mission.discodeit.dto.data.BinaryContentDto;
 import com.sprint.mission.discodeit.entity.BinaryContent;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.springframework.stereotype.Component;
 
-@Component
-@RequiredArgsConstructor
-public class BinaryContentMapper {
+@Mapper(componentModel = "spring")
+public interface BinaryContentMapper {
 
-  public BinaryContentDto toDto(BinaryContent binaryContent) {
-    if (binaryContent == null) {
-      return null;
-    }
-    return new BinaryContentDto(
-        binaryContent.getId(),
-        binaryContent.getFileName(),
-        binaryContent.getSize(),
-        binaryContent.getContentType()
+  BinaryContentDto toDto(BinaryContent binaryContent);
 
-    );
-  }
 
 }

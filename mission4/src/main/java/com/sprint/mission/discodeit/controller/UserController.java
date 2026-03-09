@@ -99,7 +99,7 @@ public class UserController implements UserApi {
 
   @Override
   @PatchMapping("/{userId}/userStatus")
-  public ResponseEntity<UserStatusDto> StatusUpdateByUserId(
+  public ResponseEntity<UserStatusDto> updateUserStatusByUserId(
       @PathVariable UUID userId,
       @RequestBody UserStatusUpdateRequest Request
   ) {

@@ -28,14 +28,14 @@ public interface ChannelApi {
 
   @Operation(summary = "Public Channel 생성", operationId = "create_3")
   @ApiResponse(responseCode = "201", description = "Public Channel이 성공적으로 생성됨",
-      content = @Content(schema = @Schema(implementation = Channel.class)))
+      content = @Content(schema = @Schema(implementation = ChannelDto.class)))
   public ResponseEntity<ChannelDto> createPublic(
 
       @RequestBody PublicChannelCreateRequest publicChannelCreateRequest);
 
   @Operation(summary = "Private Channel 생성")
   @ApiResponse(responseCode = "201", description = "Private Channel이 성공적으로 생성됨",
-      content = @Content(schema = @Schema(implementation = Channel.class)))
+      content = @Content(schema = @Schema(implementation = ChannelDto.class)))
   public ResponseEntity<ChannelDto> createPrivate(
       @RequestBody PrivateChannelCreateRequest privateChannelCreateRequest);
 
@@ -49,7 +49,7 @@ public interface ChannelApi {
   @Operation(summary = "Channel 정보 수정", operationId = "update_3")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Channel 정보가 성공적으로 수정됨",
-          content = @Content(schema = @Schema(implementation = Channel.class))),
+          content = @Content(schema = @Schema(implementation = ChannelDto.class))),
       @ApiResponse(responseCode = "400", description = "Private 채널은 수정할 수 없음",
           content = @Content(examples = @ExampleObject("Private channel cannot be updated"))),
       @ApiResponse(responseCode = "404", description = "Channel을 찾을 수 없음",

@@ -43,7 +43,7 @@ public class ReadStatusController implements ReadStatusApi {
   }
 
   @GetMapping
-  public ResponseEntity<List<ReadStatusDto>> findByUserId(
+  public ResponseEntity<List<ReadStatusDto>> findAllByUserId(
       @RequestParam UUID userId
   ) {
     List<ReadStatusDto> readStatusList = readStatusService.findAllByUserId(userId);

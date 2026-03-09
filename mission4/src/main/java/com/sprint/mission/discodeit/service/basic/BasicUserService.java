@@ -98,7 +98,7 @@ public class BasicUserService implements UserService {
     String newEmail = userUpdateRequest.newEmail();
     if (!user.getEmail().equals(newEmail) && userRepository.existsByEmail(
         newEmail)) {
-      throw new IllegalArgumentException("이메일이 이마 존재합니다.");
+      throw new IllegalArgumentException("이메일이 이미 존재합니다.");
 
     }
     userRepository.findByUsername(newUsername)
@@ -115,6 +115,8 @@ public class BasicUserService implements UserService {
           byte[] bytes = profileRequest.bytes();
           BinaryContent binaryContent = new BinaryContent(fileName, (long) bytes.length,
               contentType);
+          binaryContentRepository.save(binaryContent);
+          binaryContentStorage.put(binaryContent.getId(), bytes);
           return binaryContent;
         })
         .orElse(null);

@@ -33,25 +33,17 @@ public class BasicReadStatusService implements ReadStatusService {
   @Override
   public ReadStatusDto create(ReadStatusCreateRequest request) {
     User user = userRepository.findById(request.userId())
-        .orElseThrow();
+        .orElseThrow(() -> new NoSuchElementException("User not found"));
     Channel channel = channelRepository.findById(request.channelId())
-        .orElseThrow();
+        .orElseThrow(() -> new NoSuchElementException("Channel not found"));
+    if (readStatusRepository.existsByUserIdAndChannelId(user.getId(), channel.getId())) {
 
-    if (!userRepository.existsById(user.getId())) {
-      throw new NoSuchElementException("User with id " + user.getId() + " does not exist");
-    }
-    if (!channelRepository.existsById(channel.getId())) {
-      throw new NoSuchElementException("Channel with id " + channel.getId() + " does not exist");
-    }
-    if (readStatusRepository.findAllByUserId(user.getId()).stream()
-        .anyMatch(readStatus -> readStatus.getChannel().getId().equals(channel.getId()))) {
       throw new IllegalArgumentException(
           "ReadStatus with userId " + user.getId() + " and channelId " + channel.getId()
               + " already exists");
     }
 
-    Instant lastReadAt = request.lastReadAt();
-    ReadStatus readStatus = new ReadStatus(user, channel, lastReadAt);
+    ReadStatus readStatus = new ReadStatus(user, channel, request.lastReadAt());
     return mapper.toDto(readStatusRepository.save(readStatus));
   }
 

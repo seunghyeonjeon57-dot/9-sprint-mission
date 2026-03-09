@@ -4,20 +4,13 @@ import com.sprint.mission.discodeit.dto.data.UserStatusDto;
 import com.sprint.mission.discodeit.entity.User;
 import com.sprint.mission.discodeit.entity.UserStatus;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
-@Component
-@RequiredArgsConstructor
-public class UserStatusMapper {
+@Mapper(componentModel = "spring")
+public interface UserStatusMapper {
 
-  public UserStatusDto toDto(UserStatus userStatus) {
-    User user = userStatus.getUser();
-    return new UserStatusDto(
-        userStatus.getId(),
-        user.getId(),
-        userStatus.getLastActiveAt()
-
-    );
-  }
-
+  UserStatusDto toDto(UserStatus userStatus);
 }
+
+

@@ -20,6 +20,7 @@ public interface ChannelRepository extends JpaRepository<Channel, UUID> {
       """)
   List<Channel> findAllAccessibleByUserId(@Param("userId") UUID userId);
 
+
   @EntityGraph(attributePaths = {"readStatuses", "readStatuses.user"})
   List<Channel> findAll();
 
