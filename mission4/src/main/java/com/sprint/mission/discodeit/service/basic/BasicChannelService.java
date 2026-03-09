@@ -47,20 +47,23 @@ public class BasicChannelService implements ChannelService {
   public ChannelDto create(PrivateChannelCreateRequest request) {
     Channel channel = new Channel(ChannelType.PRIVATE, null, null);
     Channel createdChannel = channelRepository.save(channel);
+    List<User> participants = userRepository.findAllById(request.participantIds());
+    if (participants.size() != request.participantIds().size()) {
+      throw new IllegalArgumentException("일부 유저가 존재하지않음");
+    }
+    participants.forEach(user -> {
+      ReadStatus readStatus = new ReadStatus(user, channel, Instant.now());
+      // [팩트] 채널 내부 리스트에 직접 추가해줘야 매퍼가 SELECT를 안 날립니다.
+      channel.getReadStatuses().add(readStatus);
+    });
 
-    List<ReadStatus> readStatuses = request.participantIds().stream()
-        .map(userId -> {
-          User user = userRepository.findById(userId)
-              .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 유저" + userId));
-          return new ReadStatus(user, createdChannel, channel.getCreatedAt());
-        })
-        .toList();
-    readStatusRepository.saveAll(readStatuses);
+    channelRepository.save(channel);
 
     return channelMapper.toDto(channel);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public ChannelDto find(UUID channelId) {
     Channel channel = channelRepository.findById(channelId)
         .orElseThrow(() -> new NoSuchElementException("해당 Id의 채널이 없음" + channelId));
@@ -69,8 +72,16 @@ public class BasicChannelService implements ChannelService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public List<ChannelDto> findAllByUserId(UUID userId) {
     List<Channel> mySubscribedChannels = channelRepository.findAllAccessibleByUserId(userId);
+    if (mySubscribedChannels.isEmpty()) {
+      return List.of();
+    }
+
+    List<UUID> channelIds = mySubscribedChannels.stream().map(Channel::getId).toList();
+    readStatusRepository.findAllByChannelIdIn(channelIds);
+
     return mySubscribedChannels.stream()
         .map(channel -> channelMapper.toDto(channel))
         .toList();

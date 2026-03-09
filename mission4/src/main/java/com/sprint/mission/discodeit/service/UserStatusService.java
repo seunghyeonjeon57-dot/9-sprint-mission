@@ -7,18 +7,20 @@ import com.sprint.mission.discodeit.entity.UserStatus;
 
 import java.util.List;
 import java.util.UUID;
+import org.springframework.data.jpa.repository.Query;
 
 public interface UserStatusService {
 
   UserStatusDto create(UserStatusCreateRequest request);
 
-  UserStatus find(UUID userStatusId);
 
-  List<UserStatus> findAll();
+  UserStatusDto find(UUID userStatusId);
 
-  UserStatus update(UUID userStatusId, UserStatusUpdateRequest request);
+  List<UserStatusDto> findAll();
 
-  UserStatus updateByUserId(UUID userId, UserStatusUpdateRequest request);
+  UserStatusDto update(UUID userStatusId, UserStatusUpdateRequest request);
+
+  UserStatusDto updateByUserId(UUID userId, UserStatusUpdateRequest request);
 
   void delete(UUID userStatusId);
 }

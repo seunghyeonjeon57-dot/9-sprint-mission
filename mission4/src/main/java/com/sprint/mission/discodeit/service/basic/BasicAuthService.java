@@ -20,7 +20,7 @@ public class BasicAuthService implements AuthService {
   private final UserMapper userMapper;
 
   @Override
-
+  @Transactional
   public UserDto login(LoginRequest loginRequest) {
     String username = loginRequest.username();
     String password = loginRequest.password();
@@ -31,6 +31,12 @@ public class BasicAuthService implements AuthService {
 
     if (!user.getPassword().equals(password)) {
       throw new IllegalArgumentException("Wrong password");
+    }
+    if (user.getStatus() != null) {
+      user.getStatus().getLastActiveAt();
+    }
+    if (user.getProfile() != null) {
+      user.getProfile().getFileName();
     }
 
     return userMapper.toDto(user);

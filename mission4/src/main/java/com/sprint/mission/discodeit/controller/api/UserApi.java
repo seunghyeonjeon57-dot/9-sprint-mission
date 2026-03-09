@@ -1,6 +1,7 @@
 package com.sprint.mission.discodeit.controller.api;
 
 import com.sprint.mission.discodeit.dto.data.UserDto;
+import com.sprint.mission.discodeit.dto.data.UserStatusDto;
 import com.sprint.mission.discodeit.dto.request.UserCreateRequest;
 import com.sprint.mission.discodeit.dto.request.UserStatusUpdateRequest;
 import com.sprint.mission.discodeit.dto.request.UserUpdateRequest;
@@ -82,7 +83,7 @@ public interface UserApi {
       @ApiResponse(responseCode = "404", description = "해당 User의 UserStatus를 찾을 수 없음",
           content = @Content(examples = @ExampleObject("UserStatus with userId {userId} not found")))
   })
-  public ResponseEntity<UserStatus> StatusUpdateByUserId(
+  public ResponseEntity<UserStatusDto> StatusUpdateByUserId(
       @Parameter(description = "상태를 변경할 User ID") UUID userId,
       @Parameter(description = "변경할 User 온라인 상태 정보") UserStatusUpdateRequest Request);
 

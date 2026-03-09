@@ -11,6 +11,7 @@ spring:
 
     show-sql: false
     defer-datasource-initialization: true
+
     properties:
       hibernate:
         default_batch_fetch_size: 100

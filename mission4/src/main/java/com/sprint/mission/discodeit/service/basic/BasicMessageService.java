@@ -70,6 +70,7 @@ public class BasicMessageService implements MessageService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public MessageDto find(UUID messageId) {
     return mapper.toDto(messageRepository.findById(messageId)
         .orElseThrow(
@@ -77,6 +78,7 @@ public class BasicMessageService implements MessageService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public PageResponse<MessageDto> findAllByChannelId(UUID channelId, Pageable pageable) {
     Slice<Message> messageSlice = messageRepository.findAllByChannelId(channelId, pageable);
     Slice<MessageDto> dtoSlice = messageSlice.map(message -> mapper.toDto(message));
@@ -92,7 +94,7 @@ public class BasicMessageService implements MessageService {
         .orElseThrow(
             () -> new NoSuchElementException("Message with id " + messageId + " not found"));
     message.update(newContent);
-    return mapper.toDto(messageRepository.save(message));
+    return mapper.toDto(message);
   }
 
   @Override

@@ -9,6 +9,7 @@ import com.sprint.mission.discodeit.mapper.UserStatusMapper;
 import com.sprint.mission.discodeit.repository.UserRepository;
 import com.sprint.mission.discodeit.repository.UserStatusRepository;
 import com.sprint.mission.discodeit.service.UserStatusService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -45,21 +46,25 @@ public class BasicUserStatusService implements UserStatusService {
   }
 
   @Override
-  public UserStatus find(UUID userStatusId) {
-    return userStatusRepository.findById(userStatusId)
-        .orElseThrow(
-            () -> new NoSuchElementException("UserStatus with id " + userStatusId + " not found"));
+  @Transactional(readOnly = true)
+  public UserStatusDto find(UUID userId) {
+    return userStatusRepository.findByUserId(userId).map(userStatusMapper::toDto)
+        .orElseThrow(() -> new NoSuchElementException("UserStatus not found"));
+
   }
 
   @Override
-  public List<UserStatus> findAll() {
-    return userStatusRepository.findAll().stream()
+  @Transactional(readOnly = true)
+  public List<UserStatusDto> findAll() {
+    List<UserStatus> dto = userStatusRepository.findAllWithUser();
+    return dto.stream()
+        .map(userStatusMapper::toDto)
         .toList();
   }
 
   @Transactional
   @Override
-  public UserStatus update(UUID userStatusId, UserStatusUpdateRequest request) {
+  public UserStatusDto update(UUID userStatusId, UserStatusUpdateRequest request) {
     Instant newLastActiveAt = request.newLastActiveAt();
 
     UserStatus userStatus = userStatusRepository.findById(userStatusId)
@@ -67,12 +72,12 @@ public class BasicUserStatusService implements UserStatusService {
             () -> new NoSuchElementException("UserStatus with id " + userStatusId + " not found"));
     userStatus.update(newLastActiveAt);
 
-    return userStatusRepository.save(userStatus);
+    return userStatusMapper.toDto(userStatusRepository.save(userStatus));
   }
 
   @Transactional
   @Override
-  public UserStatus updateByUserId(UUID userId, UserStatusUpdateRequest request) {
+  public UserStatusDto updateByUserId(UUID userId, UserStatusUpdateRequest request) {
     Instant newLastActiveAt = request.newLastActiveAt();
 
     UserStatus userStatus = userStatusRepository.findByUserId(userId)
@@ -81,7 +86,7 @@ public class BasicUserStatusService implements UserStatusService {
 
     userStatus.update(newLastActiveAt);
 
-    return userStatusRepository.save(userStatus);
+    return userStatusMapper.toDto(userStatusRepository.save(userStatus));
   }
 
   @Transactional

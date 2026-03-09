@@ -2,6 +2,7 @@ package com.sprint.mission.discodeit.controller;
 
 import com.sprint.mission.discodeit.controller.api.UserApi;
 import com.sprint.mission.discodeit.dto.data.UserDto;
+import com.sprint.mission.discodeit.dto.data.UserStatusDto;
 import com.sprint.mission.discodeit.dto.request.BinaryContentCreateRequest;
 import com.sprint.mission.discodeit.dto.request.UserCreateRequest;
 import com.sprint.mission.discodeit.dto.request.UserStatusUpdateRequest;
@@ -98,11 +99,11 @@ public class UserController implements UserApi {
 
   @Override
   @PatchMapping("/{userId}/userStatus")
-  public ResponseEntity<UserStatus> StatusUpdateByUserId(
+  public ResponseEntity<UserStatusDto> StatusUpdateByUserId(
       @PathVariable UUID userId,
       @RequestBody UserStatusUpdateRequest Request
   ) {
-    UserStatus updateUser = userStatusService.updateByUserId(userId, Request);
+    UserStatusDto updateUser = userStatusService.updateByUserId(userId, Request);
     return ResponseEntity.ok(updateUser);
   }
 
