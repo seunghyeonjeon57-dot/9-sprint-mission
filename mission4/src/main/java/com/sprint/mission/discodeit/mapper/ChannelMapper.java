@@ -19,13 +19,13 @@ import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public abstract class ChannelMapper {
 
   @Autowired
   protected UserMapper userMapper;
 
-  @Mapping(target = "participantIds", expression = "java(mapParticipants(channel))")
+  @Mapping(target = "participants", expression = "java(mapParticipants(channel))")
   @Mapping(target = "lastMessageAt", expression = "java(calculateLastMessageAt(channel))")
   public abstract ChannelDto toDto(Channel channel);
 

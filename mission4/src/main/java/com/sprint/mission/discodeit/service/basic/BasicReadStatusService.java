@@ -42,9 +42,15 @@ public class BasicReadStatusService implements ReadStatusService {
           "ReadStatus with userId " + user.getId() + " and channelId " + channel.getId()
               + " already exists");
     }
-
-    ReadStatus readStatus = new ReadStatus(user, channel, request.lastReadAt());
-    return mapper.toDto(readStatusRepository.save(readStatus));
+    return readStatusRepository.findByUserIdAndChannelId(user.getId(), channel.getId())
+        .map(status -> {
+          status.update(request.lastReadAt());
+          return mapper.toDto(readStatusRepository.save(status));
+        })
+        .orElseGet(() -> {
+          ReadStatus newStatus = new ReadStatus(user, channel, request.lastReadAt());
+          return mapper.toDto(newStatus);
+        });
   }
 
   @Override

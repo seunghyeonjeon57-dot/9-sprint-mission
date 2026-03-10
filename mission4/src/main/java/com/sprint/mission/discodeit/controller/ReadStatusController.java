@@ -42,6 +42,7 @@ public class ReadStatusController implements ReadStatusApi {
     return ResponseEntity.ok(updateReadStatus);
   }
 
+  @Override
   @GetMapping
   public ResponseEntity<List<ReadStatusDto>> findAllByUserId(
       @RequestParam UUID userId

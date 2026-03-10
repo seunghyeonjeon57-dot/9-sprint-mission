@@ -34,7 +34,7 @@ public interface ReadStatusApi {
           content = @Content(examples = @ExampleObject("Channel | User with id {channelId | userId} not found")))
   })
   public ResponseEntity<ReadStatusDto> create(
-      @Parameter(description = "생성된 읽음 상태", required = true) @RequestBody ReadStatusCreateRequest request);
+      @Parameter(description = "생성된 읽음 상태") @RequestBody ReadStatusCreateRequest request);
 
 
   @Operation(summary = "Message 읽음 상태 수정", operationId = "update_1")
